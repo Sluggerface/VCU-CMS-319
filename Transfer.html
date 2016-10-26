@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+
+	<head> 
+	<h2><center> VCU Transfer Guide</center> </h2>
+	 <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+     <link rel="stylesheet" href="main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+ <style type="text/css">
+ 	
+ 	textarea
+ 	{
+ 		height: 300px;
+ 	}
+
+ 	.sem{
+ 		height: 418px;
+ 		width: 45%;
+ 	}
+
+ 	.courseReq{
+ 		height: 200px;
+ 		width: 100%;
+ 	}
+
+ 	.inputW
+ 	{
+ 		width: 30%
+ 	}
+ </style>
+	
+	</head>
+ <body>
+ 	
+  <div class="container-fluid"> 
+
+       
+        <div class="row">
+
+        <div class="col-md-2" style="background-color: #F1C40F">
+
+      			  <h4> Step 1) Please enter VCU classes </h4>
+      			  <select id="CRN">
+   						 <option>CMSC</option>
+   						 <option>EE</option>
+   						 <option>NUKE</option>
+   						 <option>MATH</option>
+
+  				   </select>
+       			   <input type="text" id="course" class="inputW"></input> 
+
+           		   <button id= "classBox" onclick="getInput()"> Enter cass + </button>
+           		   <button id= "remove" onclick="removeClass()"> Remove - </button>
+
+           		   <div > 
+           		   		 <h4>Your classes  </h4>
+           		   		<textarea id="box"></textarea>
+
+					</div>      
+
+					 <button id= "submit"> Submit </button>
+        </div>
+
+         <div class="col-md-5" style="background-color: #99CCFF">
+            	<h2>Your Schedule </h2>
+            	<textarea id="spring" class="sem"> Spring :</textarea>
+            	<textarea id="fall" class="sem"> Fall:</textarea>
+            	
+            	 <footer> 
+   		<footer align="center" >
+     	<p><Strong>Disclaimer:</Strong></p>
+  		<p>Only classes with a grade of C or better will be able to transfer.</p>
+  		<p>For more assistance, please contact a VCU transfer advisor: <a href="http://www.transfer.vcu.edu/about-us/contact.html">Transfer Advisor Contact Info</a>
+  </footer>
+         </div>
+         
+            <div class="col-md-5" style="background-color: #F1C40F">
+
+				<h4> Step 2) Select when you would like to start </h4>
+            <form action="", id="semester">
+				  <input type="radio" name="Sem" value="Spring" id="springRadio"> Spring<br>
+ 				 <input type="radio" name="Sem" value="Fall" id="fallRadio"> Fall<br>
+ 				
+			</form>
+
+            	<h4> Step 3) Pick your Major </h4>
+            	 <select id="mySelect">
+ 					 <option value="CS">Computer</option>
+  					 <option value="EE">Electrical</option>
+ 					 <option value="NE">Nuclear</option>
+ 				 </select>
+ 				 	<button type="button" onclick="myFunction()"> Select Major</button>
+
+ 						<div>
+  							
+  							<h4>Degree Dequirements </h4>
+  							<textarea id="core" class="courseReq"> </textarea>
+  						</div>
+
+ 				 		<div>
+
+ 				 		<h4> Step 4) Schedule Class </h4>
+  						<select id="selectNumber">
+   						 <option> Major classes</option>
+  						</select>
+
+  						<button type="button" onclick="scheduleClass()"> Schedule Class </button>
+
+  						<button type="button">Lock Semester </button>
+  						</div>
+
+            </div>
+        </div>
+
+    </div> 
+
+	 <script>
+
+	 			
+			
+
+			
+		// var a= {Course: "CMSC256", Credits: "4", Semester:"fall", Pre: ["453", "dfs". "dfs"]};
+		var springSemester=[];
+		var fallSemester=[];
+			var a= {Course: "CMSC256", Credits: "4", Semester:"fall"};
+			
+			var b={Course: "CMSC301", Credits: "3", Semester:"spring"};
+			var c={Course: "CMSC303", Credits: "4", Semester:"fall"};
+			var d={Course: "CMSC401", Credits: "3", Semester:"fall"};
+			var e7={Course: "CMSC391", Credits: "3", Semester:"spring"};
+			var f={Course: "CMSC257", Credits: "3", Semester:"spring"};
+			var g={Course: "CMSC312", Credits: "3", Semester:"fall"};
+			
+
+			var a1={Course: "EE255", Credits: "4", Semester:"fall"};
+			var b1={Course: "EE435", Credits: "3", Semester:"spring"};
+			var c1={Course: "EE280", Credits: "4", Semester:"fall"};
+			var d1={Course: "EE400", Credits: "3", Semester:"spring"};
+			var e1={Course: "EE424", Credits: "3", Semester:"spring"};
+			var f1={Course: "EE385", Credits: "3", Semester:"spring"};
+			var g1={Course: "EE401", Credits: "3", Semester:"spring"};
+
+
+			var q={Course: "Nukes101", Credits: "4", Semester:"fall"};
+			var w={Course: "Nukes102", Credits: "3", Semester:"spring"};
+			var e={Course: "Nukes103", Credits: "4", Semester:"fall"};
+			var r={Course: "Apocalypse101", Credits: "3", Semester:"fall"};
+			var t={Course: "Apocalypse102", Credits: "3", Semester:"spring"};
+			var y={Course: "Apocalypse103", Credits: "3", Semester:"fall"};
+			var u={Course: "FallOut", Credits: "3", Semester:"spring"};
+			
+			var CS=[];
+			var EE=[];
+			var NE=[];
+			var transferIn=[];
+
+			CS.push(a);
+			CS.push(b);
+			CS.push(c);
+			CS.push(d);
+			CS.push(e7);
+			CS.push(f);
+			CS.push(g);
+
+			EE.push(a1);
+			EE.push(b1);
+			EE.push(c1);
+			EE.push(d1);
+			EE.push(e1);
+			EE.push(f1);
+			EE.push(g1);
+		
+
+			NE.push(q);
+			NE.push(w);
+			NE.push(e);
+			NE.push(t);
+			NE.push(r);
+			NE.push(y);
+			NE.push(u);
+
+
+		
+	 	function myFunction()
+ 			{	
+ 			var x = document.getElementById( "mySelect").selectedIndex;
+            
+ 			// instead of using major array, we can copy whaterver major is selected to the classArray		
+ 				
+ 			var classArray=[];
+
+ 				if (x==0)
+ 				{
+ 				classArray.push.apply(classArray, CS);
+ 				}
+ 				else if (x==1)
+ 				{
+ 					classArray.push.apply(classArray, EE);
+ 				} 		
+ 				else if(x==2)
+ 				{
+ 					// selected Nuclear
+ 					classArray.push.apply(classArray, NE);
+ 				}	
+
+
+var select = document.getElementById("selectNumber");
+
+var length = select.options.length;
+for (i = 0; i < length; i++) {
+  select.options[i] = null;
+}
+
+
+ 				// populate the drop down with classes for the selected major
+		var select = document.getElementById("selectNumber");
+		select.length = 0 ;
+
+		for(var i = 0; i < classArray.length; i++) 
+			{
+    			var opt = classArray[i].Course;
+   				var el = document.createElement("option");
+    			el.textContent = opt;
+    			el.value = opt;
+    			select.appendChild(el);
+			}
+
+				// Pupulate the text area with every class in the maojr 
+						var content="";	  
+			 			for (var i=0; i< classArray.length; i++)	
+						 {		 	
+			 			content+= "CRN: "+ classArray[i].Course + "--- Credits: " + classArray[i].Credits+  "--- Semester: " + classArray[i].Semester+ "&nbsp" +"\n";	
+						 }	
+					 	
+					document.getElementById("core").innerHTML = content; 
+
+
+
+
+ 				// not what class array contains whatever major we selected, we can begin to display the classes
+
+ 			 }
+
+ 			 function getInput()
+ 				 {	
+	 	
+					var CRN=document.getElementById('CRN').value;
+ 					var text = document.getElementById('course').value;
+ 					text=CRN+text;
+ 					addClass(text)
+ 		 		 }
+
+ 			 function addClass(c)
+				{
+					transferIn.push(c);
+					print();
+					
+					
+				}
+	 
+				 function removeClass()
+ 				{	
+ 					transferIn.pop();
+ 					print();					
+ 		 		 }
+
+ 		 		  function print()
+ 		 		  {
+
+ 		 				 var content="";
+ 		 				 document.getElementById("box").innerHTML = content; 
+ 		 				  
+			 			for (var i=0; i<transferIn.length; i++)	
+						 {		 	
+			 			content+= transferIn[i] + "&nbsp" +"\n";	
+						 }	
+						 
+				
+					document.getElementById("box").innerHTML = content; 
+					
+ 		 		  }
+
+
+
+ 		 		  	 function scheduleClass()
+ 				{	
+ 						var CRN=document.getElementById('selectNumber').value;
+
+ 					if(document.getElementById('springRadio').checked)
+ 						 {
+
+ 					springSemester.push(CRN);
+ 					
+						}
+						else if(document.getElementById('fallRadio').checked)
+						 {
+
+ 					fallSemester.push(CRN);
+ 				
+						  }
+
+						   var content="";  
+			 			for (var i=0; i<springSemester.length; i++)	
+						 {		 	
+			 			content+= springSemester[i] + "&nbsp" +"\n";	
+						 }	
+
+						 document.getElementById("spring").innerHTML = content; 
+
+
+						 content="";  
+			 			for (var i=0; i<fallSemester.length; i++)	
+						 {		 	
+			 			content+= fallSemester[i] + "&nbsp" +"\n";	
+						 }	
+
+						 document.getElementById("fall").innerHTML = content; 
+ 				
+
+ 		 		 }
+
+
+	 </script>
+
+
+ </body>
+
+
+</html>
