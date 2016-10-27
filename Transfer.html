@@ -16,17 +16,14 @@
  	{
  		height: 300px;
  	}
-
  	.sem{
  		height: 418px;
  		width: 45%;
  	}
-
  	.courseReq{
  		height: 200px;
  		width: 100%;
  	}
-
  	.inputW
  	{
  		width: 30%
@@ -62,7 +59,7 @@
 
 					</div>      
 
-					 <button id= "submit"> Submit </button>
+					 <button type="button" onclick="submit()"> Submit </button>
         </div>
 
          <div class="col-md-5" style="background-color: #99CCFF">
@@ -119,10 +116,8 @@
     </div> 
 
 	 <script>
-
 	 			
 			
-
 			
 		// var a= {Course: "CMSC256", Credits: "4", Semester:"fall", Pre: ["453", "dfs". "dfs"]};
 		var springSemester=[];
@@ -136,7 +131,6 @@
 			var f={Course: "CMSC257", Credits: "3", Semester:"spring"};
 			var g={Course: "CMSC312", Credits: "3", Semester:"fall"};
 			
-
 			var a1={Course: "EE255", Credits: "4", Semester:"fall"};
 			var b1={Course: "EE435", Credits: "3", Semester:"spring"};
 			var c1={Course: "EE280", Credits: "4", Semester:"fall"};
@@ -144,8 +138,6 @@
 			var e1={Course: "EE424", Credits: "3", Semester:"spring"};
 			var f1={Course: "EE385", Credits: "3", Semester:"spring"};
 			var g1={Course: "EE401", Credits: "3", Semester:"spring"};
-
-
 			var q={Course: "Nukes101", Credits: "4", Semester:"fall"};
 			var w={Course: "Nukes102", Credits: "3", Semester:"spring"};
 			var e={Course: "Nukes103", Credits: "4", Semester:"fall"};
@@ -153,11 +145,17 @@
 			var t={Course: "Apocalypse102", Credits: "3", Semester:"spring"};
 			var y={Course: "Apocalypse103", Credits: "3", Semester:"fall"};
 			var u={Course: "FallOut", Credits: "3", Semester:"spring"};
+
+			//global arrays
 			
 			var CS=[];
 			var EE=[];
 			var NE=[];
 			var transferIn=[];
+			var classArray=[];
+			var completedCourses=[];
+
+			//end global arrays
 
 			CS.push(a);
 			CS.push(b);
@@ -166,7 +164,6 @@
 			CS.push(e7);
 			CS.push(f);
 			CS.push(g);
-
 			EE.push(a1);
 			EE.push(b1);
 			EE.push(c1);
@@ -175,7 +172,6 @@
 			EE.push(f1);
 			EE.push(g1);
 		
-
 			NE.push(q);
 			NE.push(w);
 			NE.push(e);
@@ -183,8 +179,6 @@
 			NE.push(r);
 			NE.push(y);
 			NE.push(u);
-
-
 		
 	 	function myFunction()
  			{	
@@ -192,8 +186,7 @@
             
  			// instead of using major array, we can copy whaterver major is selected to the classArray		
  				
- 			var classArray=[];
-
+ 			
  				if (x==0)
  				{
  				classArray.push.apply(classArray, CS);
@@ -207,20 +200,14 @@
  					// selected Nuclear
  					classArray.push.apply(classArray, NE);
  				}	
-
-
 var select = document.getElementById("selectNumber");
-
 var length = select.options.length;
 for (i = 0; i < length; i++) {
   select.options[i] = null;
 }
-
-
  				// populate the drop down with classes for the selected major
 		var select = document.getElementById("selectNumber");
 		select.length = 0 ;
-
 		for(var i = 0; i < classArray.length; i++) 
 			{
     			var opt = classArray[i].Course;
@@ -229,7 +216,6 @@ for (i = 0; i < length; i++) {
     			el.value = opt;
     			select.appendChild(el);
 			}
-
 				// Pupulate the text area with every class in the maojr 
 						var content="";	  
 			 			for (var i=0; i< classArray.length; i++)	
@@ -238,14 +224,8 @@ for (i = 0; i < length; i++) {
 						 }	
 					 	
 					document.getElementById("core").innerHTML = content; 
-
-
-
-
  				// not what class array contains whatever major we selected, we can begin to display the classes
-
  			 }
-
  			 function getInput()
  				 {	
 	 	
@@ -254,7 +234,6 @@ for (i = 0; i < length; i++) {
  					text=CRN+text;
  					addClass(text)
  		 		 }
-
  			 function addClass(c)
 				{
 					transferIn.push(c);
@@ -265,13 +244,35 @@ for (i = 0; i < length; i++) {
 	 
 				 function removeClass()
  				{	
+ 					for(i = 0; i < completedCourses.length; i++){
+ 						var x = transferIn.length - 1;
+ 						if (transferIn[x] == completedCourses[i].Course){
+ 							classArray.push(completedCourses[i]);
+ 							var select = document.getElementById("selectNumber");
+ 							var opt = completedCourses[i].Course;
+ 							var el = document.createElement("option");
+    			            el.textContent = opt;
+    			            el.value = opt;
+    			            select.appendChild(el);
+ 							completedCourses.splice(i, 1);
+
+ 						}
+ 					}
  					transferIn.pop();
- 					print();					
+ 					print();	
+
+ 					    var content="";	  
+			 			for (var i=0; i< classArray.length; i++)	
+						 {		 	
+			 			content+= "CRN: "+ classArray[i].Course + "--- Credits: " + classArray[i].Credits+  "--- Semester: " + classArray[i].Semester+ "&nbsp" +"\n";	
+						 }	
+					 	
+					    document.getElementById("core").innerHTML = content; 
+
  		 		 }
 
  		 		  function print()
  		 		  {
-
  		 				 var content="";
  		 				 document.getElementById("box").innerHTML = content; 
  		 				  
@@ -284,47 +285,62 @@ for (i = 0; i < length; i++) {
 					document.getElementById("box").innerHTML = content; 
 					
  		 		  }
-
-
-
+ 		 		  
  		 		  	 function scheduleClass()
  				{	
  						var CRN=document.getElementById('selectNumber').value;
-
  					if(document.getElementById('springRadio').checked)
  						 {
-
  					springSemester.push(CRN);
  					
 						}
 						else if(document.getElementById('fallRadio').checked)
 						 {
-
  					fallSemester.push(CRN);
  				
 						  }
-
 						   var content="";  
 			 			for (var i=0; i<springSemester.length; i++)	
 						 {		 	
 			 			content+= springSemester[i] + "&nbsp" +"\n";	
 						 }	
-
 						 document.getElementById("spring").innerHTML = content; 
-
-
 						 content="";  
 			 			for (var i=0; i<fallSemester.length; i++)	
 						 {		 	
 			 			content+= fallSemester[i] + "&nbsp" +"\n";	
 						 }	
-
 						 document.getElementById("fall").innerHTML = content; 
  				
-
  		 		 }
 
+ 		 		 function submit(){
+                                      var select = document.getElementById("selectNumber");
+                                      
+                                      		for(var i = 0; i < transferIn.length; i++) 
+                                                {
+                                                    var course = transferIn[i];
+                                                    for(var j = 0; j < classArray.length; j++){
+                                                        var check = classArray[j].Course;
+                                                        if (course == check){
+                                                        	completedCourses.push(classArray[j]);
+                                                            classArray.splice(j, 1);
+                                                            select.remove(j);
+                                                        }
+                                                    }
 
+                                                }
+
+                        var content="";	  
+			 			for (var i=0; i< classArray.length; i++)	
+						 {		 	
+			 			content+= "CRN: "+ classArray[i].Course + "--- Credits: " + classArray[i].Credits+  "--- Semester: " + classArray[i].Semester+ "&nbsp" +"\n";	
+						 }	
+					 	
+					    document.getElementById("core").innerHTML = content; 
+                                      
+                                      
+                                  }
 	 </script>
 
 
