@@ -64,8 +64,9 @@
 
          <div class="col-md-5" style="background-color: #99CCFF">
             	<h2>Your Schedule </h2>
-            	<textarea id="spring" class="sem"> Spring :</textarea>
-            	<textarea id="fall" class="sem"> Fall:</textarea>
+            	<textarea id="scheduleArea" class="sem"> </textarea>
+            	<select id="scheduledRemoval"></select>
+            	<button id= "removeSchedule" onclick="removeScheduledClass()"> Remove Scheduled Class</button>
             	
             	 <footer> 
    		<footer align="center" >
@@ -78,11 +79,24 @@
             <div class="col-md-5" style="background-color: #F1C40F">
 
 				<h4> Step 2) Select what semester you are scheduling classes for. </h4>
-            <form action="", id="semester">
-				  <input type="radio" name="Sem" value="Spring" id="springRadio"> Spring<br>
- 				 <input type="radio" name="Sem" value="Fall" id="fallRadio"> Fall<br>
- 				
-			</form>
+            <select id="semesterNumber">
+            <option>Fall 1</option>
+            <option>Spring 2</option>
+            <option>Fall 2</option>
+            <option>Spring 3</option>
+            <option>Fall 3</option>
+            <option>Spring 4</option>
+            <option>Fall 4</option>
+            <option>Spring 5</option>
+            <option>Fall 5</option>
+            <option>Spring 6</option>
+            <option>Fall 6</option>
+            <option>Spring 7</option>
+            <option>Fall 7</option>
+            <option>Spring 8</option>
+            <option>Fall 8</option>
+            <option>Spring 9</option>
+            </select>
 
             	<h4> Step 3) Pick your Major </h4>
             	 <select id="mySelect">
@@ -150,8 +164,7 @@
 			var transferIn=[];
 			var classArray=[];
 			var completedCourses=[];
-			var springSemester=[];
-		    var fallSemester=[];
+			var scheduledCourses=[];
 		    var select = document.getElementById("selectNumber");
 
 			//end global arrays
@@ -178,7 +191,27 @@
 			NE.push(r);
 			NE.push(y);
 			NE.push(u);
-		
+
+			scheduledCourses.push(["Fall 1"]);
+			scheduledCourses.push(["Spring 2"]);
+			scheduledCourses.push(["Fall 2"]);
+			scheduledCourses.push(["Spring 3"]);
+			scheduledCourses.push(["Fall 3"]);
+			scheduledCourses.push(["Spring 4"]);
+			scheduledCourses.push(["Fall 4"]);
+			scheduledCourses.push(["Spring 5"]);
+			scheduledCourses.push(["Fall 5"]);
+			scheduledCourses.push(["Spring 6"]);
+			scheduledCourses.push(["Fall 6"]);
+			scheduledCourses.push(["Spring 7"]);
+			scheduledCourses.push(["Fall 7"]);
+			scheduledCourses.push(["Spring 8"]);
+			scheduledCourses.push(["Fall 8"]);
+			scheduledCourses.push(["Spring 9"]);
+
+			print();
+
+
 	 	function myFunction()
  			{	
  			var x = document.getElementById( "mySelect").selectedIndex;
@@ -269,55 +302,76 @@ for (i = 0; i < length; i++) {
 						 }	
 					    document.getElementById("core").innerHTML = content; 
 						content="";  
-			 			for (var i=0; i<springSemester.length; i++)	
+			 			for (var i=0; i<scheduledCourses.length; i++)	
 						 {		 	
-			 			content+= springSemester[i] + "&nbsp" +"\n";	
+			 			content+= "===== " + scheduledCourses[i][0] + " =====" + "&nbsp" +"\n";	
+			 				for (var j=1; j<scheduledCourses[i].length; j++){
+			 					content+= scheduledCourses[i][j].Course + "&nbsp" +"\n";
+			 				}
 						 }	
-						 document.getElementById("spring").innerHTML = content; 
-						content="";  
-			 			for (var i=0; i<fallSemester.length; i++)	
-						 {		 	
-			 			content+= fallSemester[i] + "&nbsp" +"\n";	
-						 }	
-						 document.getElementById("fall").innerHTML = content; 
-					
+						 document.getElementById("scheduleArea").innerHTML = content; 				
  		 		  }
  		 		  
  		 		  	 function scheduleClass()
  				{	
  						var CRN=document.getElementById('selectNumber').value;
+ 						var SEM=document.getElementById('semesterNumber').value;
  						var courseToSchedule;
- 						var index = 0;
+ 						var courseIndex = 0;
+ 						var semesterIndex = 0;
  						for (i = 0; i < classArray.length; i++){
  							if(CRN == classArray[i].Course){
  								courseToSchedule = classArray[i];
- 								index = i;
+ 								courseIndex = i;
  						   }
  						}
- 					if(document.getElementById('springRadio').checked)
- 						 {
- 						 	if (courseToSchedule.Semester == "spring"){
-
- 						 		springSemester.push(CRN);
- 						 		completedCourses.push(classArray[i]);
- 						 		classArray.splice(i, 1);
- 						 		select.remove(i);
- 						 	}
- 					
-						}
-						else if(document.getElementById('fallRadio').checked)
-						 {
- 				
- 							if(courseToSchedule.Semester == "fall"){
-
- 								fallSemester.push(CRN);
- 								completedCourses.push(classArray[i]);
- 						 		classArray.splice(i, 1);
- 						 		select.remove(i);
-
+ 						for (i=0; i < scheduledCourses.length; i++){
+ 							if(SEM == scheduledCourses[i][0]){
+ 								semesterIndex = i;
  							}
-						  }
+ 						}
+ 		
+ 						 		scheduledCourses[semesterIndex].push(courseToSchedule);
+ 						 		completedCourses.push(classArray[courseIndex]);
+ 						 		classArray.splice(courseIndex, 1);
+ 						 		select.remove(courseIndex);
+
+ 						 		var opt = CRN;
+   								var el = document.createElement("option");
+    							el.textContent = opt;
+    							el.value = opt;
+    							scheduledRemoval.appendChild(el);
+ 		
+
 						  print();
+ 		 		 }
+
+ 		 		 function removeScheduledClass(){
+ 		 		 	var CRN=document.getElementById('scheduledRemoval').value;
+
+ 		 		 	for (i=0; i < completedCourses.length; i++){
+ 		 		 		if (CRN == completedCourses[i].Course){
+ 		 		 			completedCourses.splice(i, 1);
+ 		 		 		}
+ 		 		 	}
+ 		 		 	for (i=0; i < scheduledCourses.length; i++){
+ 		 		 		for (j=0; j < scheduledCourses[i].length; j++){
+ 		 		 			if (CRN == scheduledCourses[i][j].Course){
+
+ 		 		 				classArray.push(scheduledCourses[i][j]);
+ 		 		 				scheduledCourses[i].splice(j, 1);
+ 		 		 				scheduledRemoval.remove(document.getElementById('scheduledRemoval').selectedIndex);
+
+ 		 		 				var opt = CRN;
+ 		 		 				var el = document.createElement("option");
+ 		 		 				el.textContent = opt;
+ 		 		 				el.value = opt;
+ 		 		 				select.appendChild(el);
+ 		 		 				
+ 		 		 			}
+ 		 		 		}
+ 		 		 	}
+ 		 		 	print();
  		 		 }
 
  		 		 function submit(){
