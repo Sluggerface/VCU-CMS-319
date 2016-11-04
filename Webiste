@@ -1,0 +1,520 @@
+<!doctype html>
+<html>
+
+	<head> 
+	<h2><center> VCU Transfer Guide</center> </h2>
+	 <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+     <link rel="stylesheet" href="main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+ <style type="text/css">
+
+ .fullHeight {
+  padding-bottom: 1000px;
+  margin-bottom: -1000px;
+  height: 100%;
+}
+
+ 	
+ 	textarea
+ 	{
+ 		height: 300px;
+ 	}
+
+ 	h3.hidden {
+    display: none;
+		}
+
+		h3.visible {
+    display: visible;
+		}
+
+ 	.sem{
+ 		height: 418px;
+ 		width: 45%;
+ 	}
+
+ 	.completed{
+ 		height: 130px;
+ 		width: 100%;
+ 	}
+
+ 	.missing{
+ 		height: 130px;
+ 		width: 100%;
+ 	}
+
+ 	.inputW
+ 	{
+ 		width: 30%
+ 	}
+ </style>
+	
+	</head>
+ <body>
+ 	
+  <div class="container-fluid"> 
+
+        <div class="row">
+
+        <div class="col-md-2 fullHeight" style="background-color: #F1C40F">
+
+      			  <h4> Step 1) Please enter VCU classes </h4>
+      			  <select id="CRN">
+      			 		  <option>BIO</option>
+      			 		  <option>CHEM</option>
+   						 <option>CMSC</option>
+   					     <option>ENG</option>
+   					     <option>ECON</option>
+   					     <option>HIST</option>
+   						 <option>MATH</option>
+   					     <option>PHY</option>
+  				   </select>
+
+       			   <input type="text" id="course" class="inputW"></input> 
+
+           		   <button id= "classBox" onclick="addTransferClass()"> Enter cass + </button>
+           		   <button id= "remove" onclick="removeClass()"> Remove - </button>
+
+           		   <div > 
+           		   		 <h4>Transfering: </h4>
+           		   		<textarea id="box"></textarea>
+
+           		   		<footer> 
+   						<footer align="center" >
+     					<p><Strong>Disclaimer:</Strong></p>
+  						<p>Only classes with a grade of C or better will be able to transfer.</p>
+  						<p>For more assistance, please contact a VCU transfer advisor: <a href="http://www.transfer.vcu.edu/about-us/contact.html">Transfer Advisor Contact Info</a>
+  						</footer>
+
+					</div>      
+
+
+        </div>
+
+      
+         
+            <div class="col-md-6 fullHeight" style="background-color: #DAF7A6">
+
+					<h4> Step 2) Select when you would like to start </h4>
+           			 <form action="", id="startSemester">
+						 <input type="radio" name="Sem" value="Spring" id="springRadio"> Spring<br>
+ 						 <input type="radio" name="Sem" value="Fall" id="fallRadio"> Fall<br>		
+					</form>
+						<select id="startYear">
+							 <option value="2017" >2017</option>
+							 <option value="2018">2018</option>
+						</select>
+
+
+            		<h4> Step 3) Pick your Major </h4>
+            	 <select id="majorDropDown">
+ 					 <option value="CS">Computer</option>
+  					 <option value="EE">Electrical</option>
+ 					 <option value="NE">Nuclear</option>
+ 				 </select>
+ 				 	<button type="button" onclick="setMajor()"> Select Major</button>
+
+ 						<div>
+  							<h4>Completed Courses </h4>
+  							<textarea id="completedTA" class="completed"> </textarea>
+
+  							<h4>Required Courses </h4>
+  							<textarea id="missingTA" class="missing"> </textarea>
+  						</div>
+
+
+ 						 <div>
+ 				 			<h4 id="SemesterDisplay"> Step 4) Schedule Class </h4>
+  							<select id="eligibleClassesDD">
+   							   <option> -----</option>
+  							</select>
+
+  							<button type="button" onclick="scheduleClass()"> Schedule Class </button>
+  							<button type="button" onclick="lockSemester()">Lock Semester </button>
+  						</div>
+ 				 	
+            </div>
+
+            <div class="col-md-2 fullHeight" style="background-color: #99CCFF">         
+            	
+            	<h3 class="hidden" id="S1">Semester 1</h3>
+            	 <ul id="Semester1"> </ul>
+            
+            	<h3 class="hidden" id="S3">Semester 3</h3>
+            	<ul id="Semester3">	</ul>
+            	  	 
+         </div>
+         <div class="col-md-2 fullHeight" style="background-color: #DAF7A6">
+
+        		 <h3 class="hidden" id="S2">Semester 2</h3>
+            	<ul id="Semester2">	</ul>
+
+            	<h3 class="hidden" id="S4">Semester 4</h3>
+            	<ul id="Semester4"></ul>
+
+         </div>
+
+        </div>
+
+    </div> 
+
+	 <script>
+			
+		
+		var springSemester=[];
+		var fallSemester=[];
+			
+			var EC= {Course: "ECON-205", Credits: "3", core: "false", spring:"true", fall:"false", pre:[]};
+			//Core
+			var M1= {Course: "MATH-200", Credits: "4", core: "true", spring:"true", fall:"false", pre:[]};
+			var M2= {Course: "MATH-201", Credits: "4", core: "true", spring:"true", fall:"false", pre:["MATH-200"]};
+
+			var M3= {Course: "MATH-EL1", Credits: "3", core: "true", spring:"true", fall:"false", pre:[]};	
+			var M4= {Course: "MATH-EL2", Credits: "3", core: "true", spring:"true", fall:"false", pre:[]};
+
+			var a= {Course: "CMSC-508", Credits: "3", core: "true", spring:"false", fall:"true", pre:["CMSC-401"]};
+			var b= {Course: "CMSC-255", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+			var c= {Course: "CMSC-256", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-255"]};
+			var d= {Course: "CMSC-257", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-256"]};
+			var e= {Course: "CMSC-302", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-255"]};
+			var f= {Course: "CMSC-303", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-302"]};
+			var g= {Course: "CMSC-311", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-302", "CMSC-257"]};
+			var h= {Course: "CMSC-312", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-302", "CMSC-311"]};
+			var i= {Course: "CMSC-355", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-256"]};
+			var j= {Course: "CMSC-401", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-256", "CMSC-302"]};
+			var k= {Course: "CMSC-403", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-256", "CMSC-303"]};
+			var l= {Course: "CMSC-451", Credits: "3", core: "true", spring:"false", fall:"true", pre:["CMSC-256", "CMSC-355"]};
+			var m= {Course: "CMSC-452", Credits: "3", core: "true", spring:"true", fall:"false", pre:["CMSC-451"]};
+			
+
+			var e1= {Course: "CMSC-Elective1", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-401", "CMSC-355"]};
+			var e2= {Course: "CMSC-Elective2", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-401"]};
+			var e3= {Course: "CMSC-Elective3", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC-401"]};
+
+		     var science1a= {Course: "CHEM-101", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+			var science1b= {Course: "CHEM-102", Credits: "4", core: "true", spring:"true", fall:"true", pre:["CHEM-101"]};
+
+			var science2a= {Course: "PHY-101", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+			var science2b= {Course: "PHY-102", Credits: "4", core: "true", spring:"true", fall:"true", pre:["PHY-101"]};
+
+			var humanities1= {Course: "HIST-101", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+			var humanities2= {Course: "HIST-102", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+
+		
+			var CS=[];
+			CS.push(a);
+			CS.push(b);
+			CS.push(c);
+			CS.push(d);
+			
+			CS.push(e);
+			CS.push(f);
+			CS.push(g);
+			CS.push(h);
+			CS.push(i);
+			CS.push(j);
+			CS.push(k);
+			CS.push(l);
+			CS.push(m);
+			
+			CS.push(e1);
+			CS.push(e2);
+			CS.push(e3);
+
+			CS.push(humanities1);
+			CS.push(humanities2);
+
+			CS.push(science1a);
+			CS.push(science1b);
+			CS.push(science2a);
+			CS.push(science2b);
+
+			CS.push(M1);
+			CS.push(M2);
+			CS.push(M3);
+			CS.push(M4);
+
+			CS.push(EC);
+
+			var EE=[];
+			var NE=[];
+			var transferIn=[];
+			var completedClasses=[]; 
+			var classArray=[];
+			var semesterCount=1;
+			var credits=0;
+			var year=2016;
+			var season="fall";
+		
+			
+		
+	 	function setMajor()
+ 			{	
+ 			semesterCount=1;
+
+ 			var x = document.getElementById( "majorDropDown").selectedIndex;
+			year = document.getElementById( "startYear").value;
+ 			
+ 			if(document.getElementById("springRadio").checked)
+ 			{
+ 				season="spring";
+ 			}
+ 			if(document.getElementById("fallRadio").checked)
+ 			{
+ 				season="fall";
+ 			}
+ 			
+ 			document.getElementById("SemesterDisplay").innerHTML = "Schedule classes for Semester " + semesterCount + " of " + season + " "+  year;
+
+ 			
+            
+ 			// instead of using major array, we can copy whaterver major is selected to the classArray		
+ 				
+ 				if (x==0)
+ 				{
+ 				classArray.push.apply(classArray, CS);
+ 				}
+ 				else if (x==1)
+ 				{
+ 					classArray.push.apply(classArray, EE);
+ 				} 		
+ 				else if(x==2)
+ 				{
+ 					// selected Nuclear
+ 					classArray.push.apply(classArray, NE);
+ 				}	
+
+
+ 				for(var i=0; i<transferIn.length; i++)
+ 				{
+ 					for (var k=0; k<classArray.length; k++)
+ 					{
+ 						if(classArray[k].Course==transferIn[i])
+ 						{
+ 							completedClasses.push(transferIn[i]);
+ 						}
+ 					}
+ 				}
+
+ 				//completedClasses.push.apply(completedClasses,transferIn);
+
+
+ 				update();
+
+			}
+			
+		function update()
+ 			{	
+
+				//This removed classes from the classArray the student has taken the class
+			
+				var content="";	 
+				var t=false;
+			
+					for (var i=0; i< classArray.length; i++)	
+						 {	
+						 	var target=classArray[i].Course;
+						 	t=false;
+						 	t=checkIfTaken(target);				 
+									 if(t==true)
+									 {
+									 	classArray.splice(i,1);
+									 	i--;
+									 }	 	
+						 	}
+
+						 	//Put all the classes that are still needed (classArray) into the missintTA 
+
+						 content="";
+			 			for (var i=0; i< classArray.length; i++)	
+						 {		
+						 	var pre="";
+						    if(classArray[i].pre.length>0)
+						    {
+						    	for(var k=0; k<classArray[i].pre.length; k++ )
+						    	pre+= " " + classArray[i].pre[k];
+						    } 	
+			 			content+= "CRN: "+ classArray[i].Course + "=== Credits: " + classArray[i].Credits+ "=== Prerequisites: "+ pre + "&nbsp" +"\n";	
+						 }	
+						document.getElementById("missingTA").innerHTML = content; 
+
+
+						//Put all taken classes into the compltedTA
+
+						content="";	
+						for (var i=0; i< completedClasses.length; i++)	
+						 {		
+						 		content+= "CRN: "+ completedClasses[i] + "&nbsp" +"\n";
+						 }
+
+						 document.getElementById("completedTA").innerHTML = content; 
+
+
+
+				// Populate the drop down with classes that the user has the pre requs for
+				
+			   var select = document.getElementById("eligibleClassesDD");
+			   var eligibleClasses= getEligible();
+			
+				for(var i = 0; i < eligibleClasses.length; i++) 
+				{
+    			var opt =eligibleClasses[i].Course;
+   				var el = document.createElement("option");
+    			el.textContent = opt;
+    			el.value = opt;
+    			select.appendChild(el);
+    			
+				}
+
+ 			 }
+
+ 			 function getEligible()
+ 			 {
+ 			 	var eligible=[];
+ 			 	var havePre=false;
+ 			    var preCount=0;
+ 		        var numPre=0;
+ 			 	
+ 		     
+ 			 	for(var i=0; i<classArray.length;i++)
+ 			 	{		
+ 			 	preCount=0;
+ 			    numPre=0;	
+ 			 			//classes with no pre requs
+ 			 	if(classArray[i].pre.length==0)
+ 			 		{
+ 			 		eligible.push(classArray[i]);
+ 			 		}
+ 			 		
+ 			 		else
+ 			 		{ 			 			 
+ 			 			numPre=classArray[i].pre.length;
+ 			 			for(var k=0; k<classArray[i].pre.length;k++)
+ 			 			{
+ 			 					for(var j=0; j<completedClasses.length;j++)
+ 			 					{
+ 			 						if(completedClasses[j]==classArray[i].pre[k])
+ 			 						{
+ 			 							preCount++;
+ 			 						}
+ 			 				
+ 			 					}		 					
+ 			 			}
+
+ 			 			if(numPre==preCount)
+ 			 			{
+ 			 				eligible.push(classArray[i]);
+ 			 			}
+ 			 	}
+ 			 	
+ 			 }
+ 			 
+ 			 	return eligible;		
+ 			 }
+
+ 			  function checkIfTaken(k)
+ 			  {
+
+
+ 			  	var a=completedClasses.length;
+ 			  	while(a--)
+ 			  	{
+ 			  		if(completedClasses[a]==k)
+ 			  		{
+ 			  			return true;
+ 			  		}
+ 			  	}
+ 			  	return false;
+ 			  }
+
+ 			 function addTransferClass()
+ 				 {	
+	 	
+					var CRN=document.getElementById('CRN').value;
+ 					var text = document.getElementById('course').value;
+ 					text=CRN+"-"+text;
+ 					addClass(text);
+ 		 		 }
+
+ 			 function addClass(q)
+				{
+					transferIn.push(q);
+					print();
+				}
+	 
+				 function removeClass()
+ 				{	
+ 					transferIn.pop();
+ 					print();					
+ 		 		 }
+
+ 		 		  function print()
+ 		 		  {
+ 		 				 var content="";
+ 		 				 document.getElementById("box").innerHTML = content; 
+ 		 				  
+			 			for (var i=0; i<transferIn.length; i++)	
+						 {		 	
+			 			content+= transferIn[i] + "&nbsp" +"\n";	
+						 }			 		
+					   document.getElementById("box").innerHTML = content; 
+ 		 		  }
+
+ 		 		  	 function scheduleClass()
+ 				{	
+
+                		var selectedClass=document.getElementById('eligibleClassesDD').value;
+                		var idx=document.getElementById('eligibleClassesDD').selectedIndex;
+                		var obj=document.getElementById('eligibleClassesDD');
+
+                		if(obj.length>0)
+                		{
+                			obj.remove(idx);
+                		}
+
+ 						completedClasses.push(selectedClass);
+ 						var ul;
+
+ 						if(semesterCount==1)
+ 						{
+ 							 ul = document.getElementById("Semester1");
+ 							 document.getElementById("S1").className = "visible";
+ 						}
+ 						else if(semesterCount==2)
+ 						{
+ 							ul = document.getElementById("Semester2");
+ 							document.getElementById("S2").className = "visible";
+ 						}
+ 						else if(semesterCount==3)
+ 						{
+ 							 ul = document.getElementById("Semester3");
+ 							 document.getElementById("S3").className = "visible";
+ 						}
+ 						else if(semesterCount==4)
+ 						{
+ 							 ul = document.getElementById("Semester4");
+ 							 document.getElementById("S4").className = "visible";
+ 						}
+
+  						var li = document.createElement("li");
+  						li.appendChild(document.createTextNode(selectedClass));
+  						ul.appendChild(li);
+
+ 		 		 }
+
+ 		 		 function lockSemester()
+ 		 		 {
+ 		 		 	var select = document.getElementById("eligibleClassesDD");
+					 select.length = 0
+
+ 		 		 	semesterCount++;
+ 		 		 	document.getElementById("SemesterDisplay").innerHTML = "Schedule classes for Semester " + semesterCount;
+ 		 		    update();
+ 		 		 }
+	 </script>
+ </body>
+</html>
