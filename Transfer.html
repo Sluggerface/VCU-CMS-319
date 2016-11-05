@@ -121,7 +121,7 @@
 
   						<button type="button" onclick="scheduleClass()"> Schedule Class </button>
 
-  						<button type="button">Lock Semester </button>
+  						<button type="button" onclick="getEligible()">Lock Semester </button>
   						</div>
 
             </div>
@@ -131,32 +131,7 @@
 
 	 <script>
 	 			
-			
-			var a= {Course: "CMSC256", Credits: "4", Semester:"fall"};
-			
-			var b={Course: "CMSC301", Credits: "3", Semester:"spring"};
-			var c={Course: "CMSC303", Credits: "4", Semester:"fall"};
-			var d={Course: "CMSC401", Credits: "3", Semester:"fall"};
-			var e7={Course: "CMSC391", Credits: "3", Semester:"spring"};
-			var f={Course: "CMSC257", Credits: "3", Semester:"spring"};
-			var g={Course: "CMSC312", Credits: "3", Semester:"fall"};
-			
-			var a1={Course: "EE255", Credits: "4", Semester:"fall"};
-			var b1={Course: "EE435", Credits: "3", Semester:"spring"};
-			var c1={Course: "EE280", Credits: "4", Semester:"fall"};
-			var d1={Course: "EE400", Credits: "3", Semester:"spring"};
-			var e1={Course: "EE424", Credits: "3", Semester:"spring"};
-			var f1={Course: "EE385", Credits: "3", Semester:"spring"};
-			var g1={Course: "EE401", Credits: "3", Semester:"spring"};
-			var q={Course: "Nukes101", Credits: "4", Semester:"fall"};
-			var w={Course: "Nukes102", Credits: "3", Semester:"spring"};
-			var e={Course: "Nukes103", Credits: "4", Semester:"fall"};
-			var r={Course: "Apocalypse101", Credits: "3", Semester:"fall"};
-			var t={Course: "Apocalypse102", Credits: "3", Semester:"spring"};
-			var y={Course: "Apocalypse103", Credits: "3", Semester:"fall"};
-			var u={Course: "FallOut", Credits: "3", Semester:"spring"};
-
-			//global arrays
+	 	    //global arrays
 			
 			var CS=[];
 			var EE=[];
@@ -168,29 +143,78 @@
 		    var select = document.getElementById("selectNumber");
 
 			//end global arrays
+			
+			var EC= {Course: "ECON205", Credits: "3", core: "false", spring:"true", fall:"false", pre:[]};
+			//Core
+			var M1= {Course: "MATH200", Credits: "4", core: "true", spring:"true", fall:"false", pre:[]};
+			var M2= {Course: "MATH201", Credits: "4", core: "true", spring:"true", fall:"false", pre:["MATH200"]};
+
+			var M3= {Course: "MATHEL1", Credits: "3", core: "true", spring:"true", fall:"false", pre:[]};	
+			var M4= {Course: "MATHEL2", Credits: "3", core: "true", spring:"true", fall:"false", pre:[]};
+
+			var a= {Course: "CMSC508", Credits: "3", core: "true", spring:"false", fall:"true", pre:["CMSC401"]};
+			var b= {Course: "CMSC255", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+			var c= {Course: "CMSC256", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC255"]};
+			var d= {Course: "CMSC257", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC256"]};
+			var e= {Course: "CMSC302", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC255"]};
+			var f= {Course: "CMSC303", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC302"]};
+			var g= {Course: "CMSC311", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC302", "CMSC257"]};
+			var h= {Course: "CMSC312", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC302", "CMSC311"]};
+			var i= {Course: "CMSC355", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC256"]};
+			var j= {Course: "CMSC401", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC256", "CMSC302"]};
+			var k= {Course: "CMSC403", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC256", "CMSC303"]};
+			var l= {Course: "CMSC451", Credits: "3", core: "true", spring:"false", fall:"true", pre:["CMSC256", "CMSC355"]};
+			var m= {Course: "CMSC452", Credits: "3", core: "true", spring:"true", fall:"false", pre:["CMSC451"]};
+			
+
+			var e1= {Course: "CMSCElective1", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC401", "CMSC355"]};
+			var e2= {Course: "CMSCElective2", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC401"]};
+			var e3= {Course: "CMSCElective3", Credits: "3", core: "true", spring:"true", fall:"true", pre:["CMSC401"]};
+
+		    var science1a= {Course: "Science1A", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+			var science1b= {Course: "Science1B", Credits: "4", core: "true", spring:"true", fall:"true", pre:["Science1A"]};
+
+			var science2a= {Course: "Science2A", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+			var science2b= {Course: "Science2B", Credits: "4", core: "true", spring:"true", fall:"true", pre:["Science2A"]};
+
+			var humanities1= {Course: "humanities1", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
+			var humanities2= {Course: "humanities2", Credits: "4", core: "true", spring:"true", fall:"true", pre:[]};
 
 			CS.push(a);
 			CS.push(b);
 			CS.push(c);
 			CS.push(d);
-			CS.push(e7);
+			
+			CS.push(e);
 			CS.push(f);
 			CS.push(g);
-			EE.push(a1);
-			EE.push(b1);
-			EE.push(c1);
-			EE.push(d1);
-			EE.push(e1);
-			EE.push(f1);
-			EE.push(g1);
-		
-			NE.push(q);
-			NE.push(w);
-			NE.push(e);
-			NE.push(t);
-			NE.push(r);
-			NE.push(y);
-			NE.push(u);
+			CS.push(h);
+			CS.push(i);
+			CS.push(j);
+			CS.push(k);
+			CS.push(l);
+			CS.push(m);
+			
+			CS.push(e1);
+			CS.push(e2);
+			CS.push(e3);
+
+			CS.push(humanities1);
+			CS.push(humanities2);
+
+			CS.push(science1a);
+			CS.push(science1b);
+			CS.push(science2a);
+			CS.push(science2b);
+
+			CS.push(M1);
+			CS.push(M2);
+			CS.push(M3);
+			CS.push(M4);
+
+			CS.push(EC);
+
+
 
 			scheduledCourses.push(["Fall 1"]);
 			scheduledCourses.push(["Spring 2"]);
@@ -214,7 +238,7 @@
 
 	 	function myFunction()
  			{	
- 			var x = document.getElementById( "mySelect").selectedIndex;
+ 			var x = document.getElementById("mySelect").selectedIndex;
             
  			// instead of using major array, we can copy whaterver major is selected to the classArray		
  				
@@ -232,20 +256,10 @@
  					// selected Nuclear
  					classArray.push.apply(classArray, NE);
  				}	
-var length = select.options.length;
-for (i = 0; i < length; i++) {
-  select.options[i] = null;
-}
+
  				// populate the drop down with classes for the selected major
-		select.length = 0 ;
-		for(var i = 0; i < classArray.length; i++) 
-			{
-    			var opt = classArray[i].Course;
-   				var el = document.createElement("option");
-    			el.textContent = opt;
-    			el.value = opt;
-    			select.appendChild(el);
-			}
+				select.length = 0 ;
+				getEligible();
 				print();
  			 }
 
@@ -272,17 +286,13 @@ for (i = 0; i < length; i++) {
  						var x = transferIn.length - 1;
  						if (transferIn[x] == completedCourses[i].Course){
  							classArray.push(completedCourses[i]);
- 							var opt = completedCourses[i].Course;
- 							var el = document.createElement("option");
-    			            el.textContent = opt;
-    			            el.value = opt;
-    			            select.appendChild(el);
  							completedCourses.splice(i, 1);
 
  						}
  					}
  					transferIn.pop();
- 					print();	
+ 					print();
+ 				    getEligible();
  		 		 }
 
  		 		  function print()
@@ -311,6 +321,63 @@ for (i = 0; i < length; i++) {
 						 }	
 						 document.getElementById("scheduleArea").innerHTML = content; 				
  		 		  }
+
+ 		 		 function getEligible()
+ 			 {
+ 			 	select.length=0;
+ 			 	var eligible=[];
+ 			 	var havePre=false;
+ 			    var preCount=0;
+ 		        var numPre=0;
+ 			 	
+ 		     
+ 			 	for(var i=0; i<classArray.length;i++)
+ 			 	{		
+ 			 	preCount=0;
+ 			    numPre=0;	
+ 			 			//classes with no pre requs
+ 			 	if(classArray[i].pre.length==0)
+ 			 		{
+ 			 		eligible.push(classArray[i]);
+ 			 		}
+ 			 		
+ 			 		else
+ 			 		{
+ 			 			 
+ 			 			numPre=classArray[i].pre.length;
+
+ 			 			for(var k=0; k<classArray[i].pre.length;k++)
+ 			 			{
+ 			 					for(var j=0; j<completedCourses.length;j++)
+ 			 					{
+ 			 						if(completedCourses[j].Course==classArray[i].pre[k])
+ 			 						{
+ 			 							preCount++;
+ 			 						}
+ 			 				
+ 			 					}	
+ 			 					
+ 			 			}
+
+ 			 			if(numPre==preCount)
+ 			 			{
+ 			 				eligible.push(classArray[i]);
+ 			 			}
+ 			 	}
+ 			 	
+ 			 }
+			
+				for(var i = 0; i < eligible.length; i++) 
+				{
+    			var opt =eligible[i].Course;
+   				var el = document.createElement("option");
+    			el.textContent = opt;
+    			el.value = opt;
+    			select.appendChild(el);
+    			
+				}	
+ 			 }
+
  		 		  
  		 		  	 function scheduleClass()
  				{	
@@ -334,7 +401,7 @@ for (i = 0; i < length; i++) {
  						 		scheduledCourses[semesterIndex].push(courseToSchedule);
  						 		completedCourses.push(classArray[courseIndex]);
  						 		classArray.splice(courseIndex, 1);
- 						 		select.remove(courseIndex);
+ 						 		
 
  						 		var opt = CRN;
    								var el = document.createElement("option");
@@ -344,6 +411,7 @@ for (i = 0; i < length; i++) {
  		
 
 						  print();
+						  select.remove(document.getElementById('selectNumber').selectedIndex);
  		 		 }
 
  		 		 function removeScheduledClass(){
@@ -361,13 +429,12 @@ for (i = 0; i < length; i++) {
  		 		 				classArray.push(scheduledCourses[i][j]);
  		 		 				scheduledCourses[i].splice(j, 1);
  		 		 				scheduledRemoval.remove(document.getElementById('scheduledRemoval').selectedIndex);
-
+								
  		 		 				var opt = CRN;
  		 		 				var el = document.createElement("option");
  		 		 				el.textContent = opt;
  		 		 				el.value = opt;
  		 		 				select.appendChild(el);
- 		 		 				
  		 		 			}
  		 		 		}
  		 		 	}
@@ -384,12 +451,12 @@ for (i = 0; i < length; i++) {
                                                         if (course == check){
                                                         	completedCourses.push(classArray[j]);
                                                             classArray.splice(j, 1);
-                                                            select.remove(j);
                                                         }
                                                     }
 
                                                 }
                                                 print();
+                                                getEligible();
                                   }
 	 </script>
 
