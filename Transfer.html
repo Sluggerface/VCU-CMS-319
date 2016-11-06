@@ -386,6 +386,8 @@
  						var courseToSchedule;
  						var courseIndex = 0;
  						var semesterIndex = 0;
+ 						var count = 0;
+
  						for (i = 0; i < classArray.length; i++){
  							if(CRN == classArray[i].Course){
  								courseToSchedule = classArray[i];
@@ -397,7 +399,29 @@
  								semesterIndex = i;
  							}
  						}
- 		
+
+ 						for (i=1; i < scheduledCourses[semesterIndex].length; i++){
+ 							count += parseInt(scheduledCourses[semesterIndex][i].Credits);
+ 						}
+ 						count += parseInt(courseToSchedule.Credits);
+ 						if (count > 18){
+ 							alert("Cannot schedule any more classes for this semester");
+ 						}
+ 						 else if (courseToSchedule.pre.length > 0){
+ 							for (i = 0; i < scheduledCourses.length; i++){
+ 								for (j = 1; j < scheduledCourses[i].length; j++){
+
+ 										var compareSchedule = scheduledCourses[i][j].Course
+ 										for(k = 0; k < courseToSchedule.pre.length; k++){
+ 											if (courseToSchedule.pre[k] == compareSchedule){
+ 												if (semesterIndex <= i)
+ 												alert("Cannot schedule " + courseToSchedule.Course + " before or at the same time as " + courseToSchedule.pre[k]);
+ 											}
+ 										}	
+ 							        }
+ 								}
+ 						}
+ 						else{
  						 		scheduledCourses[semesterIndex].push(courseToSchedule);
  						 		completedCourses.push(classArray[courseIndex]);
  						 		classArray.splice(courseIndex, 1);
@@ -410,8 +434,9 @@
     							scheduledRemoval.appendChild(el);
  		
 
-						  print();
-						  select.remove(document.getElementById('selectNumber').selectedIndex);
+						        print();
+						        select.remove(document.getElementById('selectNumber').selectedIndex);
+						    }
  		 		 }
 
  		 		 function removeScheduledClass(){
